@@ -4,6 +4,6 @@
 
 - Create database 'server'
 - Import server.sql
-- Edit New.js & Weathers.js => mysql.createConnection
+- Edit News.js & Weathers.js => mysql.createConnection
 - npm install
 - npm start
