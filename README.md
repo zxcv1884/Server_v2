@@ -1,9 +1,9 @@
 ## Server_v2
 
-#¹B¥ÎNode.js±N¤¤¥¡®ð¶H§½¥þ»O3¤Ñ¤Ñ®ð¹w³ø & Google·s»D¦Û°Ê¶ñ¤J¸ê®Æ®w¡C
+#é‹ç”¨Node.jså°‡ä¸­å¤®æ°£è±¡å±€å…¨è‡º3å¤©å¤©æ°£é å ± & Googleæ–°èžè‡ªå‹•å¡«å…¥è³‡æ–™åº«ã€‚
 
--Create database 'server'
--Import server.sql
--Edit New.js & Weathers.js => mysql.createConnection
--npm install
--npm start
+- Create database 'server'
+- Import server.sql
+- Edit New.js & Weathers.js => mysql.createConnection
+- npm install
+- npm start
