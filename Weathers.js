@@ -48,9 +48,8 @@ function deleteOldWeathers() {
     con.query("DELETE FROM `weathers` WHERE `時間` < DATE_SUB(CURRENT_TIME,INTERVAL 3 HOUR)");
 }
 function safelyParseJSON (json) {
-    var parsed;
     try {
-        parsed = JSON.parse(json)
+        JSON.parse(json)
     } catch (e) {
         return false;
     }
