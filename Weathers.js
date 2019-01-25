@@ -3,40 +3,40 @@ const mysql = require('mysql');
 const con = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "",
+    password: "nayuyu1884",
     database: "server"
 });
 const weathers = function (weathers_url) {
     request(weathers_url, function (error, response, body) {
         if (!error && response.statusCode === 200 && safelyParseJSON(body) === true) {
             let importedJSON = JSON.parse(body);
-            let locations = (importedJSON.records.locations[0].locationsName);
-            for (let i = 0; i < importedJSON.records.locations[0].location.length; i++) {
-                let location = (importedJSON.records.locations[0].location[i].locationName);
-                for (let j = 0; j < (importedJSON.records.locations[0].location[i].weatherElement.length); j++) {
-                    let elementname = (importedJSON.records.locations[0].location[i].weatherElement[j].description);
-                    if(elementname==='6小時降雨機率' || elementname==='12小時降雨機率'){
-                        elementname = '降雨機率';
-                    }
-                    if(elementname==='體感溫度'){
-                        elementname = '溫度';
-                    }
-                    if(elementname==='天氣現象'||elementname==='天氣現象編號'||elementname==='降雨機率'||elementname==='溫度'){
-                        for (let z = 0; z < (importedJSON.records.locations[0].location[i].weatherElement[j].time.length); z++) {
-                            let time = (importedJSON.records.locations[0].location[i].weatherElement[j].time[z].startTime);
-                            if (time === undefined) {
-                                time = (importedJSON.records.locations[0].location[i].weatherElement[j].time[z].dataTime)
+            let country = importedJSON.records.locations[0].locationsName;
+            for (let location of importedJSON.records.locations[0].location) {
+                let sonOfCountry = location.locationName;
+                for (let status of location.weatherElement) {
+                    let statusDescription = status.description;
+                            if(statusDescription==='6小時降雨機率' || statusDescription==='12小時降雨機率'){
+                                statusDescription = '降雨機率';
+                            }else if(statusDescription==='體感溫度'){
+                                statusDescription = '溫度';
                             }
-                            let elementvalue = (importedJSON.records.locations[0].location[i].weatherElement[j].time[z].elementValue[0].value);
-                            let sql = "INSERT INTO weathers (`縣市`, `鄉鎮`, `時間`,`" + elementname + "`) VALUES('" + locations + "', '" + location + "', '" + time + "', '" + elementvalue + "') ON DUPLICATE KEY UPDATE `" + elementname + "`='" + elementvalue + "'";
+                    if(statusDescription==='天氣現象'||statusDescription==='天氣現象編號'||statusDescription==='降雨機率'||statusDescription==='溫度') {
+                        for (let statusOfTime of status.time) {
+                            let time = (statusOfTime.startTime);
+                            if (time === undefined) {
+                                time = (statusOfTime.dataTime)
+                            }
+                            let sql ;
+                            if (statusDescription === "天氣現象") {
+                                let wxText = statusOfTime.elementValue[0].value;
+                                let wxCode = statusOfTime.elementValue[1].value;
+                                sql = "INSERT INTO weathers (`縣市`, `鄉鎮`, `時間`,`天氣現象`,`天氣現象編號`) VALUES('" + country + "', '" + sonOfCountry + "', '" + time + "', '" + wxText + "', '" + wxCode + "') ON DUPLICATE KEY UPDATE `天氣現象`='" + wxText + "',`天氣現象編號`='"+ wxCode+"'";
+                            } else {
+                                let value = (statusOfTime.elementValue[0].value);
+                                sql = "INSERT INTO weathers (`縣市`, `鄉鎮`, `時間`,`" + statusDescription + "`) VALUES('" + country + "', '" + sonOfCountry + "', '" + time + "', '" + value + "') ON DUPLICATE KEY UPDATE `" + statusDescription + "`='" + value + "'";
+                            }
                             console.log(sql);
                             con.query(sql);
-                            if ((importedJSON.records.locations[0].location[i].weatherElement[j].time[z].elementValue.length) === 2) {
-                                elementvalue = (importedJSON.records.locations[0].location[i].weatherElement[j].time[z].elementValue[1].value);
-                                 sql = "INSERT INTO weathers (`縣市`, `鄉鎮`, `時間`,`天氣現象編號`) VALUES('" + locations + "', '" + location + "', '" + time + "', '" + elementvalue + "') ON DUPLICATE KEY UPDATE `天氣現象編號`='" + elementvalue + "'";
-                                console.log(sql);
-                                con.query(sql);
-                            }
                         }
                     }
                 }
