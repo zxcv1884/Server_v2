@@ -35,10 +35,11 @@ const weathers = function (weathers_url) {
                                 let value = (statusOfTime.elementValue[0].value);
                                 let dt = new Date(time);
                                 dt.setHours(dt.getHours() + 3);
-                                let dtime = dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate() + ' ' + dt.getHours() + ':' + dt.getMinutes() + ':' + dt.getSeconds();
+                                dt = dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate() + ' ' + dt.getHours() + ':' + dt.getMinutes() + ':' + dt.getSeconds();
                                 sql = "INSERT INTO weathers (`縣市`, `鄉鎮`, `時間`,`" + statusDescription + "`) VALUES('" + country + "', '" + sonOfCountry + "', '" + time + "', '" + value + "') ON DUPLICATE KEY UPDATE `" + statusDescription + "`='" + value + "'";
                                 con.query(sql);
-                                sql = "INSERT INTO weathers (`縣市`, `鄉鎮`, `時間`,`" + statusDescription + "`) VALUES('" + country + "', '" + sonOfCountry + "', '" + dtime + "', '" + value + "') ON DUPLICATE KEY UPDATE `" + statusDescription + "`='" + value + "'";
+                                console.log(sql);
+                                sql = "INSERT INTO weathers (`縣市`, `鄉鎮`, `時間`,`" + statusDescription + "`) VALUES('" + country + "', '" + sonOfCountry + "', '" + dt + "', '" + value + "') ON DUPLICATE KEY UPDATE `" + statusDescription + "`='" + value + "'";
                             } else {
                                 let value = (statusOfTime.elementValue[0].value);
                                 sql = "INSERT INTO weathers (`縣市`, `鄉鎮`, `時間`,`" + statusDescription + "`) VALUES('" + country + "', '" + sonOfCountry + "', '" + time + "', '" + value + "') ON DUPLICATE KEY UPDATE `" + statusDescription + "`='" + value + "'";
