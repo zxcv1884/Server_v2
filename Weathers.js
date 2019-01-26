@@ -3,7 +3,7 @@ const mysql = require('mysql');
 const con = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "nayuyu1884",
+    password: "",
     database: "server"
 });
 const weathers = function (weathers_url) {
@@ -15,22 +15,30 @@ const weathers = function (weathers_url) {
                 let sonOfCountry = location.locationName;
                 for (let status of location.weatherElement) {
                     let statusDescription = status.description;
-                            if(statusDescription==='6小時降雨機率' || statusDescription==='12小時降雨機率'){
-                                statusDescription = '降雨機率';
-                            }else if(statusDescription==='體感溫度'){
-                                statusDescription = '溫度';
-                            }
-                    if(statusDescription==='天氣現象'||statusDescription==='天氣現象編號'||statusDescription==='降雨機率'||statusDescription==='溫度') {
+                    if (statusDescription === '6小時降雨機率' || statusDescription === '12小時降雨機率') {
+                        statusDescription = '降雨機率';
+                    } else if (statusDescription === '體感溫度') {
+                        statusDescription = '溫度';
+                    }
+                    if (statusDescription === '天氣現象' || statusDescription === '天氣現象編號' || statusDescription === '降雨機率' || statusDescription === '溫度') {
                         for (let statusOfTime of status.time) {
                             let time = (statusOfTime.startTime);
                             if (time === undefined) {
                                 time = (statusOfTime.dataTime)
                             }
-                            let sql ;
+                            let sql;
                             if (statusDescription === "天氣現象") {
                                 let wxText = statusOfTime.elementValue[0].value;
                                 let wxCode = statusOfTime.elementValue[1].value;
-                                sql = "INSERT INTO weathers (`縣市`, `鄉鎮`, `時間`,`天氣現象`,`天氣現象編號`) VALUES('" + country + "', '" + sonOfCountry + "', '" + time + "', '" + wxText + "', '" + wxCode + "') ON DUPLICATE KEY UPDATE `天氣現象`='" + wxText + "',`天氣現象編號`='"+ wxCode+"'";
+                                sql = "INSERT INTO weathers (`縣市`, `鄉鎮`, `時間`,`天氣現象`,`天氣現象編號`) VALUES('" + country + "', '" + sonOfCountry + "', '" + time + "', '" + wxText + "', '" + wxCode + "') ON DUPLICATE KEY UPDATE `天氣現象`='" + wxText + "',`天氣現象編號`='" + wxCode + "'";
+                            } else if (statusDescription === "降雨機率") {
+                                let value = (statusOfTime.elementValue[0].value);
+                                let dt = new Date(time);
+                                dt.setHours(dt.getHours() + 3);
+                                let dtime = dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate() + ' ' + dt.getHours() + ':' + dt.getMinutes() + ':' + dt.getSeconds();
+                                sql = "INSERT INTO weathers (`縣市`, `鄉鎮`, `時間`,`" + statusDescription + "`) VALUES('" + country + "', '" + sonOfCountry + "', '" + time + "', '" + value + "') ON DUPLICATE KEY UPDATE `" + statusDescription + "`='" + value + "'";
+                                con.query(sql);
+                                sql = "INSERT INTO weathers (`縣市`, `鄉鎮`, `時間`,`" + statusDescription + "`) VALUES('" + country + "', '" + sonOfCountry + "', '" + dtime + "', '" + value + "') ON DUPLICATE KEY UPDATE `" + statusDescription + "`='" + value + "'";
                             } else {
                                 let value = (statusOfTime.elementValue[0].value);
                                 sql = "INSERT INTO weathers (`縣市`, `鄉鎮`, `時間`,`" + statusDescription + "`) VALUES('" + country + "', '" + sonOfCountry + "', '" + time + "', '" + value + "') ON DUPLICATE KEY UPDATE `" + statusDescription + "`='" + value + "'";
@@ -44,18 +52,21 @@ const weathers = function (weathers_url) {
         }
     });
 };
+
 function deleteOldWeathers() {
     con.query("DELETE FROM `weathers` WHERE `時間` < DATE_SUB(CURRENT_TIME,INTERVAL 3 HOUR)");
 }
-function safelyParseJSON (json) {
+
+function safelyParseJSON(json) {
     try {
         JSON.parse(json)
     } catch (e) {
         return false;
     }
-    return true ;// Could be undefined!
+    return true;// Could be undefined!
 }
-function weather(){
+
+function weather() {
     deleteOldWeathers();
     weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-001?elementName=Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//宜蘭縣
     weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-005?elementName=Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//桃園市
@@ -80,8 +91,6 @@ function weather(){
     weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-081?elementName=Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//連江縣
     weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-085?elementName=Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//金門縣
 }
+
 weather();
-setInterval(weather,1000*60*60);
-
-
-
+setInterval(weather, 1000 * 60 * 60);
