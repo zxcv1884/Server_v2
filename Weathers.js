@@ -20,7 +20,7 @@ const weathers = function (weathers_url) {
                     } else if (statusDescription === '體感溫度') {
                         statusDescription = '溫度';
                     }
-                    if (statusDescription === '天氣現象' || statusDescription === '天氣現象編號' || statusDescription === '降雨機率' || statusDescription === '溫度') {
+                    if (statusDescription === '天氣現象' || statusDescription === '天氣現象編號' || statusDescription === '降雨機率' || statusDescription === '溫度' || statusDescription === '天氣預報綜合描述') {
                         for (let statusOfTime of status.time) {
                             let time = (statusOfTime.startTime);
                             if (time === undefined) {
@@ -69,28 +69,28 @@ function safelyParseJSON(json) {
 
 function weather() {
     deleteOldWeathers();
-    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-001?elementName=Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//宜蘭縣
-    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-005?elementName=Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//桃園市
-    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-009?elementName=Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//新竹縣
-    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-013?elementName=Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//苗栗縣
-    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-017?elementName=Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//彰化縣
-    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-021?elementName=Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//南投縣
-    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-025?elementName=Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//雲林縣
-    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-029?elementName=Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//嘉義縣
-    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-033?elementName=Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//屏東縣
-    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-037?elementName=Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//臺東縣
-    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-041?elementName=Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//花蓮縣
-    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-045?elementName=Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//澎湖縣
-    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-049?elementName=Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//基隆市
-    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-053?elementName=Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//新竹市
-    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-057?elementName=Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//嘉義市
-    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-061?elementName=Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//臺北市
-    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-065?elementName=Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//高雄市
-    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-069?elementName=Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//新北市
-    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-073?elementName=Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//臺中市
-    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-077?elementName=Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//臺南市
-    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-081?elementName=Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//連江縣
-    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-085?elementName=Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//金門縣
+    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-001?elementName=WeatherDescription,Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//宜蘭縣
+    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-005?elementName=WeatherDescription,Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//桃園市
+    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-009?elementName=WeatherDescription,Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//新竹縣
+    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-013?elementName=WeatherDescription,Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//苗栗縣
+    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-017?elementName=WeatherDescription,Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//彰化縣
+    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-021?elementName=WeatherDescription,Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//南投縣
+    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-025?elementName=WeatherDescription,Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//雲林縣
+    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-029?elementName=WeatherDescription,Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//嘉義縣
+    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-033?elementName=WeatherDescription,Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//屏東縣
+    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-037?elementName=WeatherDescription,Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//臺東縣
+    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-041?elementName=WeatherDescription,Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//花蓮縣
+    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-045?elementName=WeatherDescription,Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//澎湖縣
+    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-049?elementName=WeatherDescription,Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//基隆市
+    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-053?elementName=WeatherDescription,Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//新竹市
+    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-057?elementName=WeatherDescription,Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//嘉義市
+    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-061?elementName=WeatherDescription,Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//臺北市
+    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-065?elementName=WeatherDescription,Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//高雄市
+    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-069?elementName=WeatherDescription,Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//新北市
+    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-073?elementName=WeatherDescription,Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//臺中市
+    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-077?elementName=WeatherDescription,Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//臺南市
+    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-081?elementName=WeatherDescription,Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//連江縣
+    weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-085?elementName=WeatherDescription,Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//金門縣
 }
 
 weather();
