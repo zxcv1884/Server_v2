@@ -51,6 +51,7 @@ CREATE TABLE `weathers` (
   `天氣現象編號` int(100) DEFAULT NULL,
   `降雨機率` int(100) DEFAULT NULL,
   `溫度` int(100) DEFAULT NULL
+  `天氣預報綜合描述` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
