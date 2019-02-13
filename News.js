@@ -4,7 +4,7 @@ const mysql = require('mysql');
 const con = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "",
+    password: "nayuyu1884",
     database: "server"
 });
 const news = function (url, category) {
@@ -21,7 +21,6 @@ const news = function (url, category) {
             news.push([$(this).text(), $(this).attr('href').replace(".", "https://news.google.com"), category]);
         });
         let sql = "INSERT ignore INTO news (title, url,category) VALUES ?";
-
         con.query(sql, [news], function (err, result) {
             if (!err && result.affectedRows > 0) {
                 console.log(category + " number of records inserted: " + result.affectedRows);
