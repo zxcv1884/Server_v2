@@ -3,11 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "start": "npm-run-all --parallel news weathers",
-    "news": "node --max_old_space_size=4096 News.js",
-    "weathers": "node --max_old_space_size=4096 Weathers.js",
-    "run": "npm-run-all --parallel newsContent1 newsContent2",
-    "newsContent1": "node --max_old_space_size=8192 newsContent1.js",
-    "newsContent2": "node --max_old_space_size=4096 newsContent2.js "
+    "news": "node News.js",
+    "weathers": "node Weathers.js"
   },
   "dependencies": {
     "async": "^2.6.2",

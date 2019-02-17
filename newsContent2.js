@@ -28,13 +28,19 @@ function run() {
                 console.log(count);
             });
 
+            function deleteNull(url) {
+                sql = "DELETE FROM `news` WHERE `realUrl` = '"+url+"'" ;
+                con.query(sql, function (err, rows, result) {
+                });
+            }
+
             function fetchUrl(url, callback) {
                 request({
                     url: url,
                     method: "GET"
                 }, function (error, response, body) {
                     if (error || !body || response.statusCode !== 200) {
-                        return;
+                        deleteNull(url);
                     }
                     let news = analyze(body, url);
                     if(news===""){
@@ -82,4 +88,3 @@ function run() {
 }
 
 run();
-// setInterval(run, 1000 * 60 * 30);
