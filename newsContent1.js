@@ -5,7 +5,7 @@ const async = require("async");
 const con = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "nayuyu1884",
+    password: "",
     database: "server"
 });
 
@@ -33,10 +33,15 @@ function run() {
                     url: url,
                     method: "GET"
                 }, function (error, response, body) {
-                    if (error || !body) {
+                    if (error || !body ) {
                         return;
                     }
-                    let news = analyze(body);
+                    let news;
+                    if(body){
+                    news = analyze(body);
+                    }else{
+                        return;
+                    }
                     sql = "UPDATE `news` SET `realUrl`='" + news + "' WHERE `news`.`url` = '" + url + "'";
                     con.query(sql, function (err, rows, result) {
                     });

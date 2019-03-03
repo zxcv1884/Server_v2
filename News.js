@@ -5,10 +5,10 @@ const async = require("async");
 const con = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "nayuyu1884",
+    password: "",
     database: "server"
 });
-const news = function (url, category) {
+const news = function (url, category) {         //獲取新聞標題和網址
     request({
         url: url,
         method: "GET"
@@ -46,7 +46,7 @@ function run() {
 run();
 setInterval(run, 1000 * 60 * 30);
 
-function catchRealUrl() {
+function catchRealUrl() {                   //由轉址頁面取得原網址
     setTimeout(function () {
         let sql = "SELECT url FROM news WHERE `realUrl` IS NULL ";
         let count = 0;
@@ -84,17 +84,20 @@ function catchRealUrl() {
             }
 
             function analyze(body) {
+                if(body){
                 const $ = cheerio.load(body);
-                $('body a').each(function () {
-                    news = $(this).attr('href');
-                });
+                    $('body a').each(function () {
+                        news = $(this).attr('href');
+                    });
+                }else {
+                    news="";
+                }
                 return news;
             }
         })
     }, 1000 * 30)
 }
-
-function catchNewsContent() {
+function catchNewsContent() {            //取得原網址新聞內容
     let sql = "SELECT realUrl FROM news WHERE `article` IS NULL";
     let count = 0;
     con.query(sql, function (err, rows, result) {
@@ -120,7 +123,12 @@ function catchNewsContent() {
                 if (error || !body || response.statusCode !== 200) {
                     deleteNull(url);
                 }
-                let news = analyze(body, url);
+                let news;
+                if (body) {
+                    news = analyze(body, url);
+                } else {
+                    return;
+                }
                 if (news === "") {
                     sql = "DELETE FROM `news` WHERE `realUrl` = '" + url + "'";
                 } else {
@@ -136,6 +144,7 @@ function catchNewsContent() {
         }
 
         function analyze(body, url) {
+            if(body){
             const $ = cheerio.load(body);
             let news = "";
             if (!url.includes('apple')) {
@@ -160,6 +169,7 @@ function catchNewsContent() {
                 });
             }
             return news;
+            }
         }
     })
 }

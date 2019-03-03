@@ -5,7 +5,7 @@ const async = require("async");
 const con = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "nayuyu1884",
+    password: "",
     database: "server"
 });
 
@@ -22,14 +22,14 @@ function run() {
             async.mapLimit(realUrl, 10, function (url, callback) {
                 fetchUrl(url, callback);
             }, function (err, result) {
-                sql = "DELETE FROM `news` WHERE `article` = '' or `article` IS NULL" ;
+                sql = "DELETE FROM `news` WHERE `article` = '' or `article` IS NULL";
                 con.query(sql, function (err, rows, result) {
                 });
                 console.log(count);
             });
 
             function deleteNull(url) {
-                sql = "DELETE FROM `news` WHERE `realUrl` = '"+url+"'" ;
+                sql = "DELETE FROM `news` WHERE `realUrl` = '" + url + "'";
                 con.query(sql, function (err, rows, result) {
                 });
             }
@@ -42,11 +42,16 @@ function run() {
                     if (error || !body || response.statusCode !== 200) {
                         deleteNull(url);
                     }
-                    let news = analyze(body, url);
-                    if(news===""){
-                        sql = "DELETE FROM `news` WHERE `realUrl` = '"+ url +"'";
-                    }else {
-                    sql = "UPDATE `news` SET `article`=\"" + news + "\" WHERE `news`.`realUrl` = '" + url + "'";
+                    let news;
+                    if (body) {
+                        news = analyze(body, url);
+                    } else {
+                        return;
+                    }
+                    if (news === "") {
+                        sql = "DELETE FROM `news` WHERE `realUrl` = '" + url + "'";
+                    } else {
+                        sql = "UPDATE `news` SET `article`=\"" + news + "\" WHERE `news`.`realUrl` = '" + url + "'";
                     }
                     console.log(sql);
                     con.query(sql, function (err, rows, result) {

@@ -3,7 +3,7 @@ const mysql = require('mysql');
 const con = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "nayuyu1884",
+    password: "",
     database: "server"
 });
 const weathers = function (weathers_url) {
@@ -52,6 +52,7 @@ const weathers = function (weathers_url) {
             }
         }
     });
+    deleteOldWeathers();
 };
 
 function deleteOldWeathers() {
@@ -68,7 +69,6 @@ function safelyParseJSON(json) {
 }
 
 function weather() {
-    deleteOldWeathers();
     weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-001?elementName=WeatherDescription,Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//宜蘭縣
     weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-005?elementName=WeatherDescription,Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//桃園市
     weathers('https://opendata.cwb.gov.tw./api/v1/rest/datastore/F-D0047-009?elementName=WeatherDescription,Wx,AT,PoP6h&Authorization=CWB-010473E7-0B4D-48F7-8479-8F07AB175432');//新竹縣
@@ -94,4 +94,4 @@ function weather() {
 }
 
 weather();
-setInterval(weather, 1000 * 60 * 60);
+setInterval(weather, 1000 * 60 *  10);
