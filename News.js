@@ -5,7 +5,7 @@ const async = require("async");
 const con = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "",
+    password: "nayuyu1884",
     database: "server"
 });
 const news = function (url, category) {         //獲取新聞標題和網址

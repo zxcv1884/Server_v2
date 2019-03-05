@@ -5,7 +5,7 @@ const async = require("async");
 const con = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "",
+    password: "nayuyu1884",
     database: "server"
 });
 
