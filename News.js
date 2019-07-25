@@ -5,7 +5,7 @@ const async = require("async");
 const con = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "nayuyu1884",
+    password: "",
     database: "server"
 });
 const news = function (url, category) {         //獲取新聞標題和網址
@@ -18,7 +18,7 @@ const news = function (url, category) {         //獲取新聞標題和網址
         }
         const $ = cheerio.load(body);
         let news = [];
-        $('article div h4 a').each(function () {
+        $('article h4 a').each(function () {
             news.push([$(this).text(), $(this).attr('href').replace(".", "https://news.google.com"), category]);
         });
         let sql = "INSERT ignore INTO news (title, url,category) VALUES ?";
@@ -74,11 +74,17 @@ function catchRealUrl() {                   //由轉址頁面取得原網址
                     if (error || !body) {
                         return;
                     }
-                    let news = analyze(body);
+                    let news;
+                    if(body){
+                        news = analyze(body);
+                    }else{
+                        return;
+                    }
                     sql = "UPDATE `news` SET `realUrl`='" + news + "' WHERE `news`.`url` = '" + url + "'";
                     con.query(sql, function (err, rows, result) {
                     });
                     count++;
+                    console.log(count);
                     callback(null, count);
                 })
             }
@@ -129,10 +135,10 @@ function catchNewsContent() {            //取得原網址新聞內容
                 } else {
                     return;
                 }
-                if (news === "") {
+                if (news === "" || news === 'nothing') {
                     sql = "DELETE FROM `news` WHERE `realUrl` = '" + url + "'";
                 } else {
-                    sql = "UPDATE `news` SET `article`=\"" + news + "\" WHERE `news`.`realUrl` = '" + url + "'";
+                    sql = "UPDATE `news` SET `article`='" + news + "' WHERE `news`.`realUrl` = '" + url + "'";
                 }
                 console.log(sql);
                 con.query(sql, function (err, rows, result) {
@@ -147,12 +153,15 @@ function catchNewsContent() {            //取得原網址新聞內容
             if(body){
             const $ = cheerio.load(body);
             let news = "";
-            if (!url.includes('apple')) {
+            if (!url.includes('apple'||'xfastest')) {
                 $('p').each(function () {
                     if ($(this).text() !== "" && $(this).text().includes("。") && !($(this).text().includes("]※")) && !($(this).text().includes("圖／")) && !($(this).text().includes("圖/"))) {
                         news += $(this).text().replace(/\t/g, "").replace(/\n/g, "<br>").replace(/ /g, "") + '<br>';
                     }
                 });
+            }
+            if (url.includes('xfastest')){
+                return
             }
             if (url.includes('appledaily')) {
                 $('article article p').each(function () {

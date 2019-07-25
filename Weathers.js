@@ -3,7 +3,7 @@ const mysql = require('mysql');
 const con = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "nayuyu1884",
+    password: "",
     database: "server"
 });
 const weathers = function (weathers_url) {
@@ -94,4 +94,4 @@ function weather() {
 }
 
 weather();
-setInterval(weather, 1000 * 60 *  10);
+setInterval(weather, 1000 * 60 * 8);
