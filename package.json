@@ -8,7 +8,7 @@
     "googleCalendar": "node googleCalendar.js"
   },
   "dependencies": {
-    "async": "^2.6.2",
+    "async": "^3.2.2",
     "cheerio": "latest",
     "googleapis": "^27.0.0",
     "mysql": "latest",
